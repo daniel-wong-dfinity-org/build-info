@@ -10,7 +10,7 @@ readme = "../README.md"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-chrono = { version = "0.4", default_features = false }
+chrono = { version = "0.4.19", default-features = false, features = [] }
 derive_more = "0.99"
 pyo3 = { version = "0.16", optional = true }
 semver = "1"
