@@ -1,5 +1,6 @@
 // Note that we do not use `build_info_common::chrono` here.
-use chrono::{DateTime, TimeZone, Utc};
+use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
+use std::time::SystemTime;
 
 impl crate::BuildScriptOptions {
 	/// Set the build timestamp by hand.
@@ -33,7 +34,9 @@ fn get_timestamp_internal(epoch: Option<String>) -> DateTime<Utc> {
 		let epoch: i64 = epoch.parse().expect("Could not parse SOURCE_DATE_EPOCH");
 		Utc.timestamp(epoch, 0)
 	} else {
-		Utc::now()
+		// canonical implementation: Utc::now()
+		let timestamp = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
+		Utc.from_utc_datetime(&NaiveDateTime::from_timestamp_opt(timestamp as i64, 0).unwrap())
 	}
 }
 
